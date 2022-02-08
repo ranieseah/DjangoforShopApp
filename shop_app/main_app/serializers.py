@@ -62,7 +62,7 @@ class OrdersSSerializer(serializers.ModelSerializer):
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = '__all__'
+        fields = ['name','is_admin']
 
 
 class AdminSerializer(serializers.ModelSerializer):

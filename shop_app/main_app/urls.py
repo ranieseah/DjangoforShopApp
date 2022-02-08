@@ -9,7 +9,7 @@ urlpatterns=[
     path('update-product/', views.UpdateProduct.as_view()),
     path('del-product/', views.DelProduct.as_view()),
     path('remove-product/',views.RemoveProduct.as_view()),
-    # path('user/', views.ViewUser.as_view()),
+    path('user/', views.ViewUser.as_view()),
     path('login/', views.AuthUser.as_view()),
     path('user-token/', views.UserTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

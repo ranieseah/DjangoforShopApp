@@ -84,11 +84,11 @@ class AddSUser(APIView):
         Account.objects.create_superuser(email=request.data['email'], name=request.data['name'], surname=request.data['surname'], password=request.data['password'])
         return JsonResponse({"msg": "OK"})
 
-# class ViewUser(APIView):
-#     def get(self, request):
-#         users = Account.objects.get(email=request.data['email'])
-#         serializer = AccountSerializer(users, many=False)
-#         return Response(serializer.data)
+class ViewUser(APIView):
+    def post(self, request):
+        users = Account.objects.get(email=request.data['email'])
+        serializer = AccountSerializer(users, many=False)
+        return Response(serializer.data)
 
 class AuthUser(APIView):
     def post(self, request):
@@ -121,8 +121,6 @@ class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls,user):
         token=super().get_token(user)
-        token['admin'] = 'false'
-
         return token
 
 class UserTokenObtainPairView(TokenObtainPairView):

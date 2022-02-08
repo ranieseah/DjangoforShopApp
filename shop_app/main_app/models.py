@@ -8,9 +8,10 @@ class Addresses(models.Model):
     account_of = models.ForeignKey(Account, on_delete=models.CASCADE)
     recipient_name = models.CharField(max_length=30, blank=True)
     address = models.TextField()
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name
+        return self.id
 
 
 class Products(models.Model):
@@ -20,6 +21,8 @@ class Products(models.Model):
     description = models.TextField()
     qty = models.PositiveSmallIntegerField()
     image = models.CharField(max_length=500)
+    is_active = models.BooleanField(default=True)
+
 
     def __str__(self):
         return self.name
@@ -41,7 +44,7 @@ class OrdersList(models.Model):
     order_status = models.CharField(max_length=2, choices=STATUS, default=PROCESSING)
 
     def __str__(self):
-        return self.name
+        return str(self.batch_id)
 
 
 class Orders(models.Model):
@@ -62,5 +65,5 @@ class Orders(models.Model):
     order_status = models.CharField(max_length=2, choices=STATUS, default=PROCESSING)
 
     def __str__(self):
-        return self.name
+        return str(self.id)
 

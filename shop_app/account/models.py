@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
@@ -26,6 +28,7 @@ class AccountManager(BaseUserManager):
         return user
 
 class Account(AbstractBaseUser):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     email = models.EmailField(verbose_name='e-mail', max_length=60, unique=True)
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)

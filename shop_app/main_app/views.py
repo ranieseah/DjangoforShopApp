@@ -1,6 +1,6 @@
 import jwt,json
 import uuid
-
+from django.db.models import Q
 from django.db.models import Count
 from django.http import HttpResponse, JsonResponse
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -306,25 +306,21 @@ class EditStatus(APIView):
             edit.order_status = 'RY'
             last_order = Orders.objects.filter(batch_id=serializer.data['batch_id'], order_status='PR')
             is_lastorder = OrdersSSerializer(last_order, many=True)
-            print(is_lastorder.data)
-            print(len(is_lastorder.data))
             if len(is_lastorder.data) == 1:
                 batch = OrdersList.objects.get(batch_id=serializer.data['batch_id'])
                 batch.order_status = 'RY'
                 batch.save()
         elif serializer.data['order_status'] == 'RY':
             edit.order_status = 'DE'
-            last_order = Orders.objects.filter(batch_id=serializer.data['batch_id'], order_status='PR' or 'RY')
+            last_order = Orders.objects.filter(Q(batch_id=serializer.data['batch_id']), Q(order_status='PR') | Q(order_status='RY'))
             is_lastorder = OrdersSSerializer(last_order, many=True)
-            print(is_lastorder.data)
-            print(len(is_lastorder.data))
             if len(is_lastorder.data) == 1:
                 batch = OrdersList.objects.get(batch_id=serializer.data['batch_id'])
                 batch.order_status = 'DE'
                 batch.save()
         else:
             edit.order_status = 'CM'
-            last_order = Orders.objects.filter(batch_id=serializer.data['batch_id'], order_status='PR' or 'RY' or 'DE')
+            last_order = Orders.objects.filter(Q(batch_id=serializer.data['batch_id']), Q(order_status='PR') | Q(order_status='RY') | Q(order_status='DE'))
             is_lastorder = OrdersSSerializer(last_order, many=True)
             if len(is_lastorder.data) == 1:
                 batch = OrdersList.objects.get(batch_id=serializer.data['batch_id'])
@@ -332,31 +328,4 @@ class EditStatus(APIView):
                 batch.save()
         edit.save()
 
-
-        # last_order = Orders.objects.filter(batch_id=serializer.data['batch_id'], order_status='PR')
-        # is_lastorder = OrdersSSerializer(last_order, many=True)
-        # if len(is_lastorder.data) == 0:
-        #     batch = OrdersList.objects.get(batch_id=serializer.data['batch_id'])
-        #     batch.order_status = 'RY'
-        #     batch.delete()
-        # else:
-        #     order.delete()
-
-
         return JsonResponse({"msg": "OK"})
-        # serializer = OrdersSerializer(edit, many=False)
-        # edit_serializer = OrdersESerializer(instance=edit, data=request.data, partial=False)
-        # plus = Products.objects.get(prod_id=serializer.data['prod_id'][0])
-        # plus.qty += 1
-        # plus.save()
-        # minus = Products.objects.get(prod_id=request.data['prod_id'])
-        # minus.qty -= 1
-        # minus.save()
-        # edit.prod_id.clear()
-        # edit.prod_id.add(request.data['prod_id'])
-        #
-        # if edit_serializer.is_valid():
-        #     edit_serializer.save()
-        #     return JsonResponse({"msg": "OK"})
-        # else:
-        #     return JsonResponse({"msg": "Error: Unable to save to Table."})

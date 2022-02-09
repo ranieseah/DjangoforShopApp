@@ -6,6 +6,7 @@ urlpatterns=[
     path('hello/', views.hello),
     path('products/', views.ViewProducts.as_view()),
     path('add-product/', views.AddProduct.as_view()),
+    path('product-details/', views.ProductDetail.as_view()),
     path('update-product/', views.UpdateProduct.as_view()),
     path('del-product/', views.DelProduct.as_view()),
     path('remove-product/',views.RemoveProduct.as_view()),

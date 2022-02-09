@@ -39,6 +39,11 @@ class ViewProducts(APIView):
         serializer = ProductsSerializer(products, many = True)
         return Response(serializer.data)
 
+class ProductDetail(APIView):
+    def post(self, request):
+        product = Products.objects.get(prod_id=request.data['prod_id'])
+        serializer = ProductsSerializer(product, many=False)
+        return Response(serializer.data)
 
 class UpdateProduct(APIView):
     permission_classes = (IsAdminUser,)
